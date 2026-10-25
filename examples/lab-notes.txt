@@ -1,0 +1,65 @@
+The lab — one real install, inside a sandbox with rules
+====================================================================
+
+The lab is Audacity as Ubuntu 24.04
+ships it, installed with apt on the
+build machine (an Ubuntu 24.04 sandbox,
+2 CPUs, 7.9 GB RAM):
+
+  * audacity 3.4.2 (package
+    3.4.2+dfsg-1build4). The binary
+    answers --version by exiting 0
+    without printing; the version is
+    the package's, confirmed on screen
+    by the first-run dialog.
+  * Test audio generated with sox:
+    a 440 Hz tone peaking at 0.100002,
+    and 5 s of white noise + an 880 Hz
+    tone, built in two parts so the
+    noise-only stretch could be
+    measured separately.
+  * The program ran on Xvfb (virtual
+    display :99) with an ALSA null
+    device as its sound device, a
+    scratch HOME, and synthetic input
+    (xdotool) for the dialogs a pipe
+    cannot press.
+
+What the lab ran, each a transcript in
+audacity-lab/transcripts/:
+
+  t00 install + the fixtures, measured.
+  t01 first launch: the welcome dialog,
+  then the full window, screenshotted.
+  t02 mod-script-pipe enabled — after
+      removing the stale duplicate
+      config line that outvoted it —
+      and the 93-command catalogue read.
+  t03 import, normalize, WAV + MP3
+      export, all measured; the
+      parameter-name mix-up confessed
+      and the run repeated with the
+      catalogue's names (PeakLevel=-3
+      landed at 0.708069 vs 0.707946
+      expected).
+  t04 noise reduction's two steps
+      through the pipe; noise-only RMS
+      0.021443 -> 0.010758, tone+noise
+      0.088704 -> 0.061805.
+  t05 a macro file written and placed;
+      ApplyMacro over the pipe is "not
+      recognized" and the catalogue has
+      no macro command at all.
+  t06 the .aup3 taken apart (SQLite:
+      project/sampleblocks/autosave),
+      compaction on quit observed
+      (3,604,480 -> 557,056 bytes), and
+      a relaunch + reopen round trip
+      returning the track by name.
+
+Rules of the sandbox that shaped the
+work: no sound hardware and no real
+display (recording and by-ear work are
+documented only), and a modal dialog
+can stop the scripting pipe until it
+is dismissed — the lab met that too.

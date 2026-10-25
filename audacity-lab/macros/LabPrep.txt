@@ -1,0 +1,3 @@
+SelectAll:
+Normalize: Apply=1 NormalizeTo=-1 StereoIndependent=0
+Export2: Filename="/home/hatch/workspace/audacity-scratch/out/macro-normalized.wav" NumChannels=1

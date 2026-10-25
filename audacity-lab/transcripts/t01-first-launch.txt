@@ -1,0 +1,39 @@
+t01 — first launch under a virtual display
+================================================================
+
+The bench has no display, so Audacity ran
+on Xvfb (a virtual X display, :99,
+1280x800) with a scratch HOME, and an
+ALSA "null" device as the default sound
+device (~/.asoundrc: pcm.!default type
+null) so the program had a playback and
+recording device to open.
+
+$ Xvfb :99 -screen 0 1280x800x24 &
+$ HOME=<scratch> DISPLAY=:99 audacity &
+
+First launch stops at the first-run
+dialog:
+
+    Audacity 3.4.2
+    How to get help
+    These are our support methods:
+    - Quick Help / Manual / Tutorials &
+      How-tos / Forum
+    [ ] Don't show this again at start up
+    [ OK ]
+
+Dismissed with a synthetic Return key
+(xdotool). Behind it, the full main
+window: menu bar (File, Edit, Select,
+View, Transport, Tracks, Generate,
+Effect, Analyze, Tools, Help), transport
+toolbar, playback/recording meters,
+timeline, track area, selection
+toolbar, status bar reading "Welcome
+to Audacity version 3.4.2".
+
+The dialog comes back on a later fresh
+launch unless "Don't show this again"
+is actually ticked — a missed tick in
+this lab is why it was seen twice.

@@ -1,0 +1,72 @@
+Audacity — the distilled commands
+====================================================================
+Places: the guide's lab used sox to make
+and to measure audio; those commands are
+marked (lab). Effect parameters below are
+the ones this build's own catalogue
+reports (chapter 10).
+
+FIRST CONTACT (chapters 3-4)
+--------------------------------------------------------------------
+  # Windows/macOS: install from audacityteam.org
+  sudo apt install audacity          # Debian/Ubuntu
+  sox -n -r 44100 -c 1 tone.wav \    (lab) make a test file
+    synth 3 sine 440 gain -20
+  File > Import > Audio…             # copies sound in
+  Space                              # play / stop
+  Ctrl+A                             # select all
+  Del                                # cut (gap closes)
+  Ctrl+L                             # silence (gap stays)
+  Ctrl+T                             # trim to selection
+  Ctrl+Z / Ctrl+Y                    # undo / redo
+
+TRACKS AND CLIPS (chapter 6)
+--------------------------------------------------------------------
+  Ctrl+I                             # split at cursor
+  Ctrl+J                             # join clips
+  Ctrl+D                             # duplicate selection
+  Ctrl+B                             # label the selection
+  F5                                 # time shift tool
+  F6                                 # envelope tool
+
+EFFECTS, APPLIED (chapters 7-8)
+--------------------------------------------------------------------
+  Effect > Normalize…
+      Peak level -1 dB, remove DC offset
+  Effect > Noise Reduction…
+      1. select noise only -> Get Noise Profile
+      2. select all -> apply
+  Effect > Noise Gate…               # quiet below threshold
+  Effect > High-Pass Filter…  80 Hz   # rumble off voices
+  Effect > Loudness Normalization…   # LUFS targets
+
+EXPORT (chapter 9)
+--------------------------------------------------------------------
+  File > Export > Export as MP3…
+  File > Export > Export Multiple…   # one file per label
+  sox export.wav -n stat       (lab) # peak + RMS of result
+  ffprobe export.mp3           (lab) # what the file claims
+
+SCRIPTING (chapter 10)
+--------------------------------------------------------------------
+  # enable in audacity.cfg, exactly ONE line:
+  [Module]
+  mod-script-pipe=1
+  # pipes while Audacity runs:
+  /tmp/audacity_script_pipe.to.<uid>   # commands in
+  /tmp/audacity_script_pipe.from.<uid> # replies out
+  GetInfo: Type=Commands Format=JSON   # the real catalogue
+  Import2: Filename="tone.wav"
+  SelectTime: Start=0 End=1.5 RelativeTo=ProjectStart
+  SelectAll:
+  NoiseReduction:
+  Normalize: PeakLevel=-3 ApplyGain=1 RemoveDcOffset=1 \
+    StereoIndependent=0
+  Export2: Filename="out.wav" NumChannels=1
+  SaveProject2: Filename="work.aup3" AddToHistory=0
+  OpenProject2: Filename="work.aup3"
+
+PROJECTS (chapter 11)
+--------------------------------------------------------------------
+  Ctrl+S                             # save project (.aup3)
+  File > Save Project > Save Copy…   # before heroic edits

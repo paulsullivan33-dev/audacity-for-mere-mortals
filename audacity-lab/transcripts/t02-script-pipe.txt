@@ -1,0 +1,60 @@
+t02 — turning on the scripting pipe
+================================================================
+
+Audacity can be driven by another
+program through mod-script-pipe: two
+named pipes, one per direction. The
+module is off until enabled in
+Preferences > Modules, or equivalently
+by one line in audacity.cfg:
+
+[Module]
+mod-script-pipe=1
+
+The trap the lab fell into first: the
+config Audacity had generated for itself
+already contained, later in the same
+[Module] section,
+
+mod-script-pipe=4
+
+(4 = "new module, not yet enabled").
+With two keys for one module, the later
+one wins, so the hand-added =1 was
+silently ignored: the program ran, the
+pipes never appeared. Deleting the stale
+=4 line left exactly one key, and on the
+next launch:
+
+$ ls -la /tmp/audacity_script_pipe.*
+prwx------ /tmp/audacity_script_pipe.from.0
+prwx------ /tmp/audacity_script_pipe.to.0
+
+(the .0 is the user id; the pipes live
+in /tmp while the program runs.)
+
+The driver used for the rest of the lab
+is audacity-lab/scripting/drive.py:
+it writes a command line to the .to
+pipe and reads the reply from .from.
+
+>>> GetInfo: Type=Commands Format=JSON
+[ { "id":"Amplify", ... }, ... ]
+
+93 commands in this build's catalogue.
+The entries the guide relies on, with
+their real parameter names:
+
+  Normalize       PeakLevel (double,
+                  default -1), ApplyGain
+                  (bool), RemoveDcOffset
+                  (bool),
+                  StereoIndependent
+  Noise Reduction (no parameters at all
+                  — see t04)
+  Export2         Filename, NumChannels
+  Import2         Filename
+  Save Project2   Filename, AddToHistory
+
+There is no command in the catalogue
+for running a macro — see t05.

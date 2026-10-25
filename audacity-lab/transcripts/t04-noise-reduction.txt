@@ -1,0 +1,45 @@
+t04 — noise reduction, the two steps (measured)
+================================================================
+
+Input: noisy.wav (t00) — 1.5 s of white
+noise alone, then 3.5 s of an 880 Hz
+tone mixed with the same noise.
+
+Baselines (sox stat on the two parts):
+  noise only (0-1.5 s)   RMS 0.021443
+                         peak 0.060230
+  tone + noise (1.5-5 s) RMS 0.088704
+                         peak 0.255067
+
+Noise Reduction is the two-step effect:
+first it learns the noise from a
+noise-only selection, then it applies
+that knowledge to the whole track. In
+this build the effect takes no script
+parameters at all (t02) — the pipe can
+only trigger the two steps in order:
+
+>>> Import2: Filename=".../audio/noisy.wav"
+>>> SelectTime: Start=0 End=1.5
+    RelativeTo=ProjectStart
+>>> NoiseReduction:
+BatchCommand finished: OK
+>>> SelectAll:
+>>> NoiseReduction:
+BatchCommand finished: OK
+>>> Export2: Filename=".../out/nr.wav"
+Exported to WAV format: .../out/nr.wav
+
+Measured on the exported file:
+  noise only   RMS 0.021443 -> 0.010758
+               peak 0.060230 -> 0.030243
+  tone + noise RMS 0.088704 -> 0.061805
+               peak 0.255067 -> 0.177856
+
+The noise-only part fell by half; the
+part carrying the tone fell by less.
+That difference is what a working noise
+reduction looks like in numbers — and
+also its limit: the tone's segment lost
+level too, because the effect cannot
+fully tell tone from noise.

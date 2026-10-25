@@ -1,0 +1,47 @@
+t00 — install and version
+================================================================
+
+Machine: Ubuntu 24.04, 2 CPUs, 7.9 GB RAM,
+no sound hardware, no display (Xvfb used
+later; see t01).
+
+$ sudo apt-get install -y audacity
+... (package lists and progress elided;
+20 "Setting up" lines, exit code 0)
+
+$ dpkg -l audacity | tail -1
+ii  audacity  3.4.2+dfsg-1build4  amd64
+    fast, cross-platform audio editor
+
+$ audacity --version        (under Xvfb)
+(no output; exit code 0)
+
+Note: this packaged build answers
+--version by initialising and exiting
+silently. The version used throughout
+the guide is the package's, confirmed
+on screen by the first-run dialog
+("Audacity 3.4.2") and the status bar
+("Welcome to Audacity version 3.4.2").
+Without any display, --version exits
+255 instead.
+
+The lab's test audio was generated, not
+recorded (sox is the generator):
+
+$ sox -n -r 44100 -c 1 quiet-tone.wav \
+    synth 3 sine 440 gain -20
+$ sox quiet-tone.wav -n stat
+Maximum amplitude:     0.100002
+RMS     amplitude:     0.070711
+Length (seconds):      3.000000
+
+$ sox -n -r 44100 -c 1 noise-head.wav \
+    synth 1.5 whitenoise gain -28
+$ sox -n -r 44100 -c 1 noisy-body.wav \
+    synth 3.5 sine 880 whitenoise gain -14
+$ sox noise-head.wav noisy-body.wav noisy.wav
+$ sox noisy.wav -n stat
+Maximum amplitude:     0.255067
+RMS     amplitude:     0.075139
+Length (seconds):      5.000000

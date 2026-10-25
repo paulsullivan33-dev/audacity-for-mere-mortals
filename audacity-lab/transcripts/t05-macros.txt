@@ -1,0 +1,40 @@
+t05 — macros: the file yes, the pipe no
+================================================================
+
+A macro is a plain-text file of commands,
+one per line, kept in the Macros folder
+of Audacity's data directory
+(~/.local/share/audacity/Macros on this
+build). The lab wrote one
+(audacity-lab/macros/LabPrep.txt):
+
+    SelectAll:
+    Normalize: Apply=1 NormalizeTo=-1
+        StereoIndependent=0
+    Export2: Filename=".../macro-normalized.wav"
+        NumChannels=1
+
+and a fresh copy of quiet-tone.wav was
+imported. Then, over the script pipe:
+
+>>> ApplyMacro: MacroName=LabPrep
+Your batch command of ApplyMacro was
+not recognized.
+BatchCommand finished: Failed!
+
+The full command catalogue (t02) backs
+this up: 93 commands, and none of them
+runs a macro. In Audacity 3.4.2 macros
+are started from the window — Tools >
+Run Macro, or the Macro Manager —
+not from the scripting pipe. The macro
+file's format and home are verified;
+running one is documented only in this
+guide (chapter 10), because the lab
+drove the program through the pipe and
+the pipe is where macros stop.
+
+(The stale parameter names in the macro
+above are the same ones t03 confesses
+to; they are kept as written, because a
+transcript is a record, not a cleanup.)

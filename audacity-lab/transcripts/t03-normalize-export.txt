@@ -1,0 +1,52 @@
+t03 — import, normalize, export (measured)
+================================================================
+
+Driven entirely through the script pipe
+(t02). Input: quiet-tone.wav, a 440 Hz
+sine peaking at 0.100002 (t00).
+
+>>> Import2: Filename=".../audio/quiet-tone.wav"
+BatchCommand finished: OK
+>>> SelectAll:
+BatchCommand finished: OK
+>>> Normalize: ...
+BatchCommand finished: OK
+>>> Export2: Filename=".../out/normalized.wav"
+        NumChannels=1
+Exported to WAV format: .../out/normalized.wav
+BatchCommand finished: OK
+>>> Export2: Filename=".../out/normalized.mp3"
+        NumChannels=1
+Exported to MP3 format: .../out/normalized.mp3
+BatchCommand finished: OK
+
+$ sox out/normalized.wav -n stat
+Maximum amplitude:     0.891418
+RMS     amplitude:     0.630194
+
+0.891418 is -1 dB (10^(-1/20) = 0.891251,
+difference is float rounding).
+
+$ ffprobe out/normalized.mp3
+format_name=mp3, duration=3.000000
+
+An honest footnote: the first normalize
+call used parameter names from memory
+(NormalizeTo, Apply) which this build
+does not have; unknown parameters are
+ignored, so the effect ran on its
+defaults — which are PeakLevel -1 dB,
+apply gain, remove DC offset — and the
+measurement above is that defaults run.
+To prove the parameters themselves work,
+the run was repeated with the parameter
+names from the build's own catalogue
+(t02):
+
+>>> Normalize: PeakLevel=-3 ApplyGain=1
+    RemoveDcOffset=1 StereoIndependent=0
+>>> Export2: Filename=".../out/normalized-3db.wav"
+
+$ sox out/normalized-3db.wav -n stat
+Maximum amplitude:     0.708069
+(expected for -3 dB: 0.707946)

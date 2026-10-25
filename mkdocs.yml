@@ -1,0 +1,28 @@
+site_name: Audacity for Mere Mortals
+site_description: The free sound editor on a machine of your own. Seeing and selecting sound, tracks and clips, recording, cleaning up noise, effects, exporting finished files, saving projects safely, and automating the repetitive parts with macros and scripting.
+site_url: https://paulsullivan33-dev.github.io/audacity-for-mere-mortals/
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What Audacity Is: what-audacity-is.md
+  - The Moving Parts: the-moving-parts.md
+  - Installing Audacity: installing-audacity.md
+  - Your First Edit: your-first-edit.md
+  - Recording: recording.md
+  - Tracks and Clips: tracks-and-clips.md
+  - Effects and the Effect Stack: effects-and-the-effect-stack.md
+  - Cleaning Up Audio: cleaning-up-audio.md
+  - Exporting: exporting.md
+  - Macros and Scripting: macros-and-scripting.md
+  - Projects and Backup: projects-and-backup.md
+  - Recipes: recipes.md
+  - The Neighbours: the-neighbours.md
+  - Limits: limits.md
+  - Troubleshooting: troubleshooting.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md

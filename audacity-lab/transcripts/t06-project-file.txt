@@ -1,0 +1,51 @@
+t06 — the project file, inside and out
+================================================================
+
+The project on screen (the -3 dB tone
+from t03) was saved through the pipe:
+
+>>> SaveProject2:
+    Filename=".../out/lab-project.aup3"
+    AddToHistory=0
+BatchCommand finished: OK
+
+$ ls -la out/lab-project.aup3*
+-rw-r----- 3604480 lab-project.aup3
+(plus a -wal sidecar file while the
+project is open)
+
+An .aup3 is a SQLite database — one
+file holding everything (this replaced
+the old .aup file plus a folder of
+hundreds of small .au files). Read
+with Python's sqlite3, on a copy (the
+open project locks its own database):
+
+tables: autosave, project,
+        sampleblocks, sqlite_sequence
+  project:      1 row — the project
+                document (1,608 bytes
+                here; an XML document
+                stored in binary form)
+  sampleblocks: 5 rows — the audio
+                itself, in blocks
+  autosave:     0 rows (nothing
+                unsaved to recover)
+
+On quitting, Audacity compacts the
+database: the same file was 557,056
+bytes afterwards.
+
+Round trip: the program was relaunched,
+the saved project reopened through the
+pipe, and the track list asked back:
+
+>>> OpenProject2:
+    Filename=".../out/lab-project.aup3"
+>>> GetInfo: Type=Tracks Format=JSON
+[ { "name":"quiet-tone", "focused":1,
+    "selected":1, "kind":"wave",
+    "start":0, "end":3, "pan":0,
+    "gain":1, "channels":1, "solo":0,
+    "mute":0, ... } ]
+BatchCommand finished: OK
